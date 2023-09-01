@@ -1,12 +1,11 @@
 import { createContext,useReducer } from 'react';
 
 import { todoActions } from '../actions/todoActions.action';
-import { requestTodoDataKey } from '../../../configs/action-keys';
+import { requestTodoDataKey,refreshTodoDataKey } from '../../../configs/action-keys';
 
 const initialState = {
     todoList:[],
-    count:0,
-    //refreshStatus:true,
+    refreshStatus:true,
 };
 
 const TodoContext = createContext({});
@@ -23,11 +22,11 @@ const todoReducer = (state,action) =>{
                 ...state,
                 todoList:action.payload
             }
-        case "decrement":
-            return {
-                ...state,
-                count:state.count-1
-            }
+        case refreshTodoDataKey:
+                return {
+                    ...state,
+                    refreshStatus:!state.refreshStatus
+                }
         default:
             return state;
     }

@@ -26,3 +26,7 @@ code {
 .todo-list-wrapper .todo-list li{
   padding: 5px;
 }
+
+.done {
+ text-decoration: line-through !important;
+}

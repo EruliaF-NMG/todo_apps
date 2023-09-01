@@ -2,7 +2,13 @@ import axios from 'axios';
 
 import { headerToken } from '../configs/core-configs';
 
-
+/**
+ * Http client wrapper
+ * @param {String} apiURL 
+ * @param {String} httpMethod 
+ * @param {Object} body 
+ * @returns any
+ */
 const httpRequset=async(apiURL,httpMethod="get",body={})=>{
     try{
         const data = await axios({

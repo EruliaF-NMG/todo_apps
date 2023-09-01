@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-import { requestTodoDataKey } from '../../../configs/action-keys';
-import { getTodoListAPI } from '../../../configs/api-end-points';
+import { requestTodoDataKey,refreshTodoDataKey } from '../../../configs/action-keys';
+import { getTodoListAPI,editTodoListAPI } from '../../../configs/api-end-points';
 import { httpRequset } from '../../../helpers/http-wrapper.helper';
 
 const requestData= async (dispatch)=>{
@@ -23,43 +23,39 @@ const requestData= async (dispatch)=>{
    }
 }
 
-const addTodoItem= async (dispatch)=>{
+/**
+ * 
+ * @param {*} dispatch 
+ * @param {*} body 
+ */
+const addTodoItem= async (dispatch,body)=>{
     try{
-        const data = await httpRequset(getTodoListAPI)
-        console.log(data.data.items);
+        const data = await httpRequset(getTodoListAPI,"POST",body);
         dispatch({
-            type:requestTodoDataKey,
-            payload:[]
+            type:refreshTodoDataKey,
         });
-    
        }catch(ex){
         console.log("Ex:- ",ex)
        }
 }
 
-const editTodoItem= async (dispatch)=>{
+const editTodoItem= async (dispatch,id,body)=>{
     try{
-        const data = await httpRequset(getTodoListAPI)
-        console.log(data.data.items);
+        const data = await httpRequset(`${editTodoListAPI}/${id}`,"PUT",body)
         dispatch({
-            type:requestTodoDataKey,
-            payload:[]
+            type:refreshTodoDataKey,
         });
-    
        }catch(ex){
         console.log("Ex:- ",ex)
        }
 }
 
-const removeTodoItem= async (dispatch)=>{
+const removeTodoItem= async (dispatch,id)=>{
     try{
-        const data = await httpRequset(getTodoListAPI)
-        console.log(data.data.items);
+        const data = await httpRequset(`${editTodoListAPI}/${id}`,"DELETE")
         dispatch({
-            type:requestTodoDataKey,
-            payload:[]
+            type:refreshTodoDataKey,
         });
-    
        }catch(ex){
         console.log("Ex:- ",ex)
        }
@@ -68,6 +64,9 @@ const removeTodoItem= async (dispatch)=>{
 const todoActions = (dispatch) =>{
     return {
         requestData:() => requestData(dispatch),
+        addTodoItem:(body)=>addTodoItem(dispatch,body),
+        editTodoItem:(id,body)=>editTodoItem(dispatch,id,body),
+        removeTodoItem:(id)=>removeTodoItem(dispatch,id),
     }
 }
 

@@ -1,32 +1,39 @@
 import { Fragment } from "react";
+import { IsEmpty } from './UtilElements';
 
 const emptyFuntion = (...para)=>{}
+
+const NoResultFound=()=>{
+  return (
+    <div>No result found</div>
+  );
+}
 
 const LoopItms=({
     wrapperStyle="todo-list",
     items=[],
-    renderIFEmpty=(<div>No result found</div>),
+    renderIFEmpty=(<NoResultFound/>),
     renderItem=emptyFuntion,
 })=>{
+  console.log("LoopItms");
     return (
         <ui className={wrapperStyle}>
-          {
-            (items.length)?(
+          <IsEmpty
+            value={items}
+            renderIFEmpty={renderIFEmpty}
+          >
               <Fragment>
                 {
                   (items).map((item,index)=>renderItem(item,index))
                 }
               </Fragment>
-            ):(
-              <Fragment>
-                {renderIFEmpty}
-              </Fragment>
-            )
-          }
+          </IsEmpty>
         </ui>
     )
 }
 
 export {
-    LoopItms
+    LoopItms,
+    NoResultFound,
+    emptyFuntion
 }
