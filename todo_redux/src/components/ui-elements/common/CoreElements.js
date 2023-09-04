@@ -1,7 +1,6 @@
-import { Fragment,useContext } from "react";
+import { Fragment } from "react";
 import { IsEmpty } from './UtilElements';
 import { Spin } from 'antd';
-import { UIContext } from '../../global-context/context-providers/UIContext.provider';
 
 const emptyFuntion = (...para)=>{}
 
@@ -44,11 +43,10 @@ const SpinWrapper = ({
 }
 
 const FullPageLoader=()=>{
-  const [uiStatus] = useContext(UIContext);
   return (
     <Fragment>
       {
-        ( uiStatus.isload )? (
+        ( false )? (
             <div className="page-loader">
               <SpinWrapper/>
             </div>

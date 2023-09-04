@@ -1,13 +1,16 @@
 import { cloneElement } from 'react';
 
 import { TodoContextProvider } from '../components/global-context/context-providers/TodoContext.provider';
+import { UIContextProvider } from '../components/global-context/context-providers/UIContext.provider';
 
 
 const ContextProvider = ({children})=>{
     return (
-        <TodoContextProvider>
-            {children}
-        </TodoContextProvider>
+        <UIContextProvider>
+            <TodoContextProvider>
+                {children}
+            </TodoContextProvider>
+        </UIContextProvider>
     )
 }
 

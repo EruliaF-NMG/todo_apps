@@ -4,10 +4,12 @@ import { requestTodoDataKey,refreshTodoDataKey } from '../../../configs/action-k
 import { getTodoListAPI,editTodoListAPI } from '../../../configs/api-end-points';
 import { httpRequset } from '../../../helpers/http-wrapper.helper';
 
-const requestData= async (dispatch)=>{
+const requestData= async (dispatch,uiActions)=>{
    try{
+    uiActions.setPageLoader(true);
     //request data
     const data = await httpRequset(getTodoListAPI);
+    uiActions.setPageLoader(false);
     //data set
     dispatch({
         type:requestTodoDataKey,
@@ -15,6 +17,7 @@ const requestData= async (dispatch)=>{
     });
 
    } catch(ex) {
+    uiActions.setPageLoader(false);
     console.log("Ex:- ",ex);
     dispatch({
         type:requestTodoDataKey,
@@ -28,45 +31,54 @@ const requestData= async (dispatch)=>{
  * @param {*} dispatch 
  * @param {*} body 
  */
-const addTodoItem= async (dispatch,body)=>{
+const addTodoItem= async (dispatch,body,uiActions)=>{
     try{
+        uiActions.setPageLoader(true);
         const data = await httpRequset(getTodoListAPI,"POST",body);
+        uiActions.setPageLoader(false);
         dispatch({
             type:refreshTodoDataKey,
         });
        }catch(ex){
+        uiActions.setPageLoader(false);
         console.log("Ex:- ",ex)
        }
 }
 
-const editTodoItem= async (dispatch,id,body)=>{
+const editTodoItem= async (dispatch,id,body,uiActions)=>{
     try{
-        const data = await httpRequset(`${editTodoListAPI}/${id}`,"PUT",body)
+        uiActions.setPageLoader(true);
+        const data = await httpRequset(`${editTodoListAPI}/${id}`,"PUT",body);
+        uiActions.setPageLoader(false);
         dispatch({
             type:refreshTodoDataKey,
         });
        }catch(ex){
+        uiActions.setPageLoader(false);
         console.log("Ex:- ",ex)
        }
 }
 
-const removeTodoItem= async (dispatch,id)=>{
+const removeTodoItem= async (dispatch,id,uiActions)=>{
     try{
-        const data = await httpRequset(`${editTodoListAPI}/${id}`,"DELETE")
+        uiActions.setPageLoader(true);
+        const data = await httpRequset(`${editTodoListAPI}/${id}`,"DELETE");
+        uiActions.setPageLoader(false);
         dispatch({
             type:refreshTodoDataKey,
         });
        }catch(ex){
+        uiActions.setPageLoader(false);
         console.log("Ex:- ",ex)
        }
 }
 
-const todoActions = (dispatch) =>{
+const todoActions = (dispatch,uiActions) =>{
     return {
-        requestData:() => requestData(dispatch),
-        addTodoItem:(body)=>addTodoItem(dispatch,body),
-        editTodoItem:(id,body)=>editTodoItem(dispatch,id,body),
-        removeTodoItem:(id)=>removeTodoItem(dispatch,id),
+        requestData:() => requestData(dispatch,uiActions),
+        addTodoItem:(body)=>addTodoItem(dispatch,body,uiActions),
+        editTodoItem:(id,body)=>editTodoItem(dispatch,id,body,uiActions),
+        removeTodoItem:(id)=>removeTodoItem(dispatch,id,uiActions),
     }
 }
 

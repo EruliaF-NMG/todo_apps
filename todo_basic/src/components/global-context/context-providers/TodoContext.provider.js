@@ -1,7 +1,8 @@
-import { createContext,useReducer } from 'react';
+import { createContext,useReducer,useContext } from 'react';
 
 import { todoActions } from '../actions/todoActions.action';
 import { requestTodoDataKey,refreshTodoDataKey } from '../../../configs/action-keys';
+import { UIContext } from '../context-providers/UIContext.provider';
 
 const initialState = {
     todoList:[],
@@ -34,7 +35,8 @@ const todoReducer = (state,action) =>{
 
 const TodoContextProvider = ({children})=>{
     const [state, dispatch] = useReducer(todoReducer, initialState);
-    const  dispatchActions = todoActions(dispatch);
+    const [,uiActions] = useContext(UIContext);
+    const  dispatchActions = todoActions(dispatch,uiActions);
     return(
         <TodoContext.Provider value={[state,dispatchActions]}>
             {children}
